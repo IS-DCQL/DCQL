@@ -1,0 +1,9 @@
+        SELECT
+            c.caseId,
+            dm.gender,
+            dm.race,
+            d.primaryDiagnosis
+        FROM CaseEntity c
+        JOIN c.demographic dm
+        JOIN c.diagnoses d
+        WHERE c.caseId = :caseId

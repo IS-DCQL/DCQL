@@ -1,0 +1,29 @@
+{
+ "dataset": {"name": "StainlessSteelPittingScreen"},
+ "_note": "S6. Lightweight screening schema: no composition (missing); density as Range (var_type); mech.mechInfo.yield exact; no hardness (missing). Coverage 0.58, partial reference.",
+ "template": {
+  "_id": 6,
+  "info": {
+   "_type": "container", "r": true,
+   "batch": {"_type": "string", "r": true}
+  },
+  "perform": {
+   "_type": "generator", "r": true,
+   "corr": {
+    "_type": "container", "r": true,
+    "corrInfo": {"_type": "table", "r": true, "corrInfo": {
+     "_type": "container", "r": true,
+     "elecPot": {"_type": "number", "r": true},
+     "density": {"_type": "range", "r": true}
+    }}
+   },
+   "mech": {
+    "_type": "container", "r": true,
+    "mechInfo": {"_type": "table", "r": true, "mechInfo": {
+     "_type": "container", "r": true,
+     "yield": {"_type": "number", "r": true}
+    }}
+   }
+  }
+ }
+}

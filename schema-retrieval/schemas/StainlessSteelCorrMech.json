@@ -1,0 +1,30 @@
+{
+ "dataset": {"name": "StainlessSteelCorrMech"},
+ "_note": "S3. All corrosion fields plus mech.mechInfo.yield exact; no hardness column -> hard = missing; coverage 0.83, reuse with minor extension.",
+ "template": {
+  "_id": 3,
+  "info": {
+   "_type": "container", "r": true,
+   "batch": {"_type": "string", "r": true},
+   "comp": {"_type": "array", "r": true, "comp": {"_type": "string", "r": true}}
+  },
+  "perform": {
+   "_type": "generator", "r": true,
+   "corr": {
+    "_type": "container", "r": true,
+    "corrInfo": {"_type": "table", "r": true, "corrInfo": {
+     "_type": "container", "r": true,
+     "elecPot": {"_type": "number", "r": true},
+     "density": {"_type": "number", "r": true}
+    }}
+   },
+   "mech": {
+    "_type": "container", "r": true,
+    "mechInfo": {"_type": "table", "r": true, "mechInfo": {
+     "_type": "container", "r": true,
+     "yield": {"_type": "number", "r": true}
+    }}
+   }
+  }
+ }
+}

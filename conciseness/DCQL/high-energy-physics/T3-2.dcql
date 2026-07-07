@@ -1,0 +1,6 @@
+select event_number,
+       sum(particles[].momentum.px),
+       sum(particles[].momentum.py)
+from template Event dataset collision
+where particles[].status = 1
+group by event_number

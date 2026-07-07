@@ -1,0 +1,6 @@
+SELECT p.content.material_info[0].grade
+FROM `dcql`._default.pitting_corrosion p
+WHERE TONUMBER(p.content.solution_environment[0].NaCl_wt) = 3.5
+  AND TONUMBER(p.content.experimental_conditions[0].temperature_c) = 20
+  AND TONUMBER(p.content.result_characterization[0].pitting_potential_eb_v) > 1.0
+  AND TONUMBER(p.content.material_performance[0].yield_strength_mpa) > 550;

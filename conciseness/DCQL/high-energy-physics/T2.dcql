@@ -1,0 +1,2 @@
+delete from template Event dataset collision
+where particles[].status <> 1

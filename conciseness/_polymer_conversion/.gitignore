@@ -1,0 +1,9 @@
+# Generated/derived data — regenerate with the scripts; keep scripts + object/*.java + docs
+materials_library_en.json
+processing_logs_en.json
+pa6t_library_en.json
+document/
+relational/
+object/object_instances.json
+__pycache__/
+schema/

@@ -1,0 +1,8 @@
+// Renaming an attribute = change the persistent class plus a data migration.
+// 1) In the class: rename field pid -> pdgId, @Column(name = "pdg_id").
+// 2) Migrate every stored object:
+for (Particle p : em.createQuery("SELECT p FROM Particle p", Particle.class).getResultList()) {
+    p.setPdgId(p.getPid());
+    em.merge(p);
+}
+em.flush();

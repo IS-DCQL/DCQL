@@ -1,0 +1,6 @@
+alter template Case
+add table(gene_variant,
+          string(gene_name),
+          choice(variant_type, option=[SNP, INDEL, CNV]),
+          number(variant_allele_frequency),
+          string(reference_genome_version))

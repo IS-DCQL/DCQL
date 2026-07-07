@@ -1,0 +1,3 @@
+select case_id, demographic.gender, demographic.race, diagnoses[].primary_diagnosis
+from template Case dataset gdc
+where case_id = "00016c8f-a0be-4319-9c42-4f3bcd90ac92"

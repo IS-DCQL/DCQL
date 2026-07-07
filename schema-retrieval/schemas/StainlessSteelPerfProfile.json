@@ -1,0 +1,34 @@
+{
+ "dataset": {"name": "StainlessSteelPerfProfile"},
+ "_note": "S2. All fields present, but hardness sits at mech.summary.hard instead of mech.mechInfo.hard -> hard = var_path; coverage 0.92, reuse with minor extension.",
+ "template": {
+  "_id": 2,
+  "info": {
+   "_type": "container", "r": true,
+   "batch": {"_type": "string", "r": true},
+   "comp": {"_type": "array", "r": true, "comp": {"_type": "string", "r": true}}
+  },
+  "perform": {
+   "_type": "generator", "r": true,
+   "corr": {
+    "_type": "container", "r": true,
+    "corrInfo": {"_type": "table", "r": true, "corrInfo": {
+     "_type": "container", "r": true,
+     "elecPot": {"_type": "number", "r": true},
+     "density": {"_type": "number", "r": true}
+    }}
+   },
+   "mech": {
+    "_type": "container", "r": true,
+    "mechInfo": {"_type": "table", "r": true, "mechInfo": {
+     "_type": "container", "r": true,
+     "yield": {"_type": "number", "r": true}
+    }},
+    "summary": {
+     "_type": "container", "r": true,
+     "hard": {"_type": "number", "r": true}
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,7 @@
+-- Couchbase has no schema catalog; unnest each document's attribute names and keep those
+-- matching the target keywords, reporting the collection that declares them.
+SELECT DISTINCT k
+FROM `dcql`._default.pitting_corrosion AS d
+UNNEST OBJECT_NAMES(d.content.result_characterization[0]) AS k
+WHERE k LIKE "%protection_potential%" OR k LIKE "%repassivation_potential%"
+   OR k LIKE "%hysteresis_loop%";

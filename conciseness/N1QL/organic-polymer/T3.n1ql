@@ -1,0 +1,12 @@
+SELECT mat.basic_info.name AS material_name,
+       mat.samples[0].thermal.glass_temperature AS glass_temperature,
+       mat.samples[0].mechanical.tensile_strength AS tensile_strength
+FROM `dcql`._default.materials_library AS mat
+INNER JOIN `dcql`._default.processing_logs AS proc
+    ON mat.basic_info.name = proc.material_name
+WHERE mat.basic_info.category = "Semi-Aromatic"
+  AND ANY s IN mat.samples SATISFIES
+      s.thermal.glass_temperature > 280 AND s.mechanical.tensile_strength > 150 END
+  AND ANY stage IN proc.machine_settings.injection.stages
+      SATISFIES stage > 50 END
+ORDER BY mat.samples[0].thermal.glass_temperature DESC;

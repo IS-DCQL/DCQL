@@ -1,0 +1,8 @@
+candidate_schema,info.batch,info.comp,corr.corrInfo.elecPot,corr.corrInfo.density,mech.mechInfo.yield,mech.mechInfo.hard,coverage,reuse_decision
+StainlessSteel,exact,exact,exact,exact,exact,exact,1.00,reuse directly
+StainlessSteelPerfProfile,exact,exact,exact,exact,exact,var_path,0.92,reuse with minor extension
+StainlessSteelCorrMech,exact,exact,exact,exact,exact,missing,0.83,reuse with minor extension
+StainlessSteelCorrTensile,exact,exact,exact,exact,var_path,missing,0.75,reuse with minor extension
+StainlessSteelProcCorr,exact,exact,exact,var_type,var_path,missing,0.67,partial reference
+StainlessSteelPittingScreen,exact,missing,exact,var_type,exact,missing,0.58,partial reference
+StainlessSteelLegacyLog,missing,missing,exact,var_type,var_path,missing,0.33,not reusable

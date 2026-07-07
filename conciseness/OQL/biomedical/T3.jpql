@@ -1,0 +1,19 @@
+        SELECT DISTINCT c.caseId, al.aliquotId, al.concentration
+        FROM CaseEntity c
+        JOIN c.samples s
+        JOIN s.portions p
+        JOIN p.analytes a
+        JOIN a.aliquots al
+        LEFT JOIN c.diagnoses d
+        WHERE c.project.projectId IN :projectIds
+          AND (
+                c.demographic.vitalStatus = :deadStatus
+                OR (
+                    d.vitalStatus = :deadStatus
+                    AND LOWER(d.primaryDiagnosis) LIKE :diagnosisKeyword
+                )
+          )
+          AND s.sampleType = :sampleType
+          AND s.preservationMethod IN :preservationMethods
+          AND a.analyteType = :analyteType
+          AND al.concentration > :minConcentration

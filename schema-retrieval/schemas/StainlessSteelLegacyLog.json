@@ -1,0 +1,26 @@
+{
+ "dataset": {"name": "StainlessSteelLegacyLog"},
+ "_note": "S7. Minimal legacy record: only sampleId + pitting potential; density as Range (var_type); yield under mech.tensile (var_path); no batch, no composition, no hardness (all missing). Coverage 0.33 -> clears the query filter but is not reusable.",
+ "template": {
+  "_id": 7,
+  "sampleId": {"_type": "string", "r": true},
+  "perform": {
+   "_type": "generator", "r": true,
+   "corr": {
+    "_type": "container", "r": true,
+    "corrInfo": {"_type": "table", "r": true, "corrInfo": {
+     "_type": "container", "r": true,
+     "elecPot": {"_type": "number", "r": true},
+     "density": {"_type": "range", "r": true}
+    }}
+   },
+   "mech": {
+    "_type": "container", "r": true,
+    "tensile": {
+     "_type": "container", "r": true,
+     "yield": {"_type": "number", "r": true}
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,6 @@
+SELECT pe.grade
+FROM PittingExperiment pe
+WHERE pe.naclWt = 3.5
+  AND pe.temperatureC = 20
+  AND pe.result.pittingPotentialEbV > 1.0
+  AND pe.yieldStrengthMpa > 550

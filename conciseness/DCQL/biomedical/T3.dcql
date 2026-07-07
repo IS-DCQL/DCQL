@@ -1,0 +1,12 @@
+select case_id,
+       samples[].portions[].analytes[].aliquots[].aliquot_id,
+       samples[].portions[].analytes[].aliquots[].concentration
+from template Case dataset gdc
+where project.project_id in ("TCGA-KIRC", "TARGET-WT")
+  and (demographic.vital_status = "Dead"
+       or any (diagnoses[].vital_status = "Dead"
+               and diagnoses[].primary_diagnosis like "%Renal Cell Carcinoma%"))
+  and any (samples[].sample_type = "Primary Tumor"
+           and samples[].preservation_method in ("Snap Frozen", "OCT"))
+  and any (samples[].portions[].analytes[].analyte_type = "RNA"
+           and samples[].portions[].analytes[].aliquots[].concentration > 0.1)

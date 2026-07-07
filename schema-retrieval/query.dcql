@@ -1,0 +1,22 @@
+-- §6.6 (RQ4) schema-reuse case study: before defining a new schema for a new round of
+-- stainless-steel corrosion + mechanical tests, the researcher issues a schema-level query
+-- to find structurally and semantically similar existing schemas in the NMDMS schema library.
+-- Built on the running StainlessSteel example (Sections 3-5, Figure 2).
+--
+-- The 6 required fields of the new model (name . path . type):
+--   info.batch (String), info.comp (Array{Number}),
+--   corr.corrInfo.elecPot (Number), corr.corrInfo.density (Number),
+--   mech.mechInfo.yield (Number), mech.mechInfo.hard (Number).
+--
+-- The published query (Scheme C, Table rq4) mixes one PRECISE condition with two RELAXED ones,
+-- mirroring a user who has a few firm requirements and stays flexible on the rest:
+--   * exact  : corr.corrInfo.elecPot = Number   -- pin the pitting-potential column (path + type)
+--   * fuzzy-position : ANY yield = Number        -- some numeric yield anywhere (level-insensitive key)
+--   * fuzzy-type     : EXIST corr.corrInfo.density -- a density column is present, type unconstrained
+-- The corrosion and mechanical conditions join with AND in one query because a schema tree
+-- keeps both branches of the `perform` generator, even though any record instantiates one.
+
+SELECT SCHEMA
+WHERE corr.corrInfo.elecPot = Number
+  AND ANY yield = Number
+  AND EXIST corr.corrInfo.density

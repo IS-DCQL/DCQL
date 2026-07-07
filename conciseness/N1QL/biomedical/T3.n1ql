@@ -1,0 +1,22 @@
+SELECT DISTINCT c.case_id
+FROM `dcql` c
+WHERE c.project.project_id IN ["TCGA-KIRC", "TARGET-WT"]
+AND (
+    c.demographic.vital_status = "Dead"
+    OR ANY d IN c.diagnoses SATISFIES
+        d.vital_status = "Dead"
+        AND LOWER(d.primary_diagnosis) LIKE "%renal cell carcinoma%"
+    END
+)
+AND ANY s IN c.samples SATISFIES
+    s.sample_type = "Primary Tumor"
+    AND s.preservation_method IN ["Snap Frozen", "Snap-Frozen", "OCT"]
+    AND ANY p IN s.portions SATISFIES
+        ANY a IN p.analytes SATISFIES
+            a.analyte_type = "RNA"
+            AND ANY al IN a.aliquots SATISFIES
+                al.concentration > 0.1
+            END
+        END
+    END
+END;

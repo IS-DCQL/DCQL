@@ -1,0 +1,11 @@
+@Entity
+public class GeneVariant {
+    @Id
+    private String variantId;
+    @ManyToOne
+    private CaseEntity caseRef;            // Case 1 : N GeneVariant
+    private String geneName;
+    private String variantType;
+    private Double variantAlleleFrequency;
+    private String referenceGenomeVersion;
+}

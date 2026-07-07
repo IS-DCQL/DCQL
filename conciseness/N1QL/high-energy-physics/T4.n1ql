@@ -1,0 +1,2 @@
+UPDATE `dcql`._default.events
+SET p.pdg_id = p.pid, p.pid = MISSING FOR p IN particles END;

@@ -1,0 +1,11 @@
+create template PESR_HNS_Protocol
+(
+    container(composition_system).table(element).string(name),
+    container(composition_system).table(element).number(content, unit=percent),
+    container(process_parameters).string(smelting),
+    container(process_parameters).string(heat_treatment),
+    container(microstructure).string(phase),
+    container(microstructure).string(grain_size),
+    container(performance_indicators).number(yield_strength, unit=MPa),
+    container(performance_indicators).number(pitting_potential, unit=mV)
+)

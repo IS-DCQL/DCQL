@@ -1,0 +1,2 @@
+alter template Event
+alter particles.pid, pdg_id

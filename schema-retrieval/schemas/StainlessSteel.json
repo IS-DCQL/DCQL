@@ -1,0 +1,31 @@
+{
+ "dataset": {"name": "StainlessSteel"},
+ "_note": "S1 (the running example schema of the paper). Covers all six required fields exactly -> coverage 1.00, reuse directly.",
+ "template": {
+  "_id": 1,
+  "info": {
+   "_type": "container", "r": true,
+   "batch": {"_type": "string", "r": true},
+   "comp": {"_type": "array", "r": true, "comp": {"_type": "string", "r": true}}
+  },
+  "perform": {
+   "_type": "generator", "r": true,
+   "corr": {
+    "_type": "container", "r": true,
+    "corrInfo": {"_type": "table", "r": true, "corrInfo": {
+     "_type": "container", "r": true,
+     "elecPot": {"_type": "number", "r": true},
+     "density": {"_type": "number", "r": true}
+    }}
+   },
+   "mech": {
+    "_type": "container", "r": true,
+    "mechInfo": {"_type": "table", "r": true, "mechInfo": {
+     "_type": "container", "r": true,
+     "yield": {"_type": "number", "r": true},
+     "hard": {"_type": "number", "r": true}
+    }}
+   }
+  }
+ }
+}

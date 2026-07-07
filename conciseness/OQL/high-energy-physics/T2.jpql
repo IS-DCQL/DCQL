@@ -1,0 +1,8 @@
+em.createQuery("DELETE FROM Particle p WHERE p.status <> 1").executeUpdate();
+// prune dangling parent/child references among the remaining particles:
+List<Long> kept = em.createQuery("SELECT p.particleId FROM Particle p", Long.class).getResultList();
+for (Particle p : em.createQuery("SELECT p FROM Particle p", Particle.class).getResultList()) {
+    p.getParentIds().retainAll(kept);
+    p.getChildIds().retainAll(kept);
+    em.merge(p);
+}

@@ -1,0 +1,8 @@
+language,final_exam_score_mean,final_exam_score_sd,final_exam_time_min_mean,final_exam_time_min_sd,skill_decline_rate,memory_retention_score
+SQL,87.8,3.56,63.5,6.81,0.085,80.337
+OQL,69.6,9.91,99.7,13.14,0.35,45.24
+MQL,61.6,14.33,105.8,24.66,0.385,37.884
+N1QL,81.2,6.28,67.1,10.78,0.125,71.05
+XQuery,67.6,7.44,80.4,5.25,0.265,49.686
+JSONiq,70.7,10.51,79.4,9.87,0.24,53.732
+DCQL,88.0,4.72,48.9,5.45,0.054,83.248

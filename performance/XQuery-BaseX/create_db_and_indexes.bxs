@@ -1,0 +1,34 @@
+(: BaseX schema + import script for the XQuery §6.4 performance run.
+   Invoked by 2_load.sh. Creates the four databases the benchmark queries open. :)
+
+(: --- biomedical: XML DB with a TEXT index on the queried fields ---
+   Element names are single-underscore (case_id, primary_diagnosis, ...), matching
+   the conciseness biomedical queries that walk db:open("tcga_cases")/json/_ . :)
+SET TEXTINDEX true
+SET ATTRINDEX false
+SET TOKENINDEX false
+SET FTINDEX false
+SET UPDINDEX true
+SET TEXTINCLUDE case_id,project_id,primary_diagnosis,vital_status,sample_type,preservation_method,analyte_type,aliquot_id,concentration
+
+CREATE DB tcga_cases "prepared_for_basex.xml"
+CREATE INDEX TEXT
+
+(: --- organic-polymer: 3 native JSON DBs ---
+   Imported with the JSON parser so they are served as map/<string key=..>/<number key=..>,
+   the form the conciseness polymer queries walk with db:get("<name>")//map . :)
+SET PARSER json
+SET TEXTINDEX true
+SET ATTRINDEX true
+SET TOKENINDEX false
+SET FTINDEX false
+SET TEXTINCLUDE data_id,alpha_crystallinity,name,material_name,category,glass_temperature,tensile_strength,stages
+
+CREATE DB materials_library "materials_library_en.json"
+CREATE INDEX TEXT
+
+CREATE DB processing_logs "processing_logs_en.json"
+CREATE INDEX TEXT
+
+CREATE DB pa6t_library "pa6t_library_en.json"
+CREATE INDEX TEXT

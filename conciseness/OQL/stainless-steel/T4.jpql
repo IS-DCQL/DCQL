@@ -1,0 +1,2 @@
+// Removing an entity = delete the persistent class from the model and drop its extent.
+em.createNativeQuery("DROP TABLE g48_immersion_legacy").executeUpdate();

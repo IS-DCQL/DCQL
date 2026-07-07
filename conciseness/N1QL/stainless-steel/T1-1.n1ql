@@ -1,0 +1,2 @@
+-- Couchbase is schema-less: no schema definition is required.
+CREATE COLLECTION `dcql`._default.pesr_hns_protocol;

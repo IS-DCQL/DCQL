@@ -1,0 +1,2 @@
+select schema
+where exist smiles and exist thermal_decomposition

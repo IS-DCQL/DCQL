@@ -1,0 +1,8 @@
+SELECT
+c.case_id,
+c.demographic.gender,
+c.demographic.race,
+d.primary_diagnosis
+FROM `medical` c
+UNNEST c.diagnoses d
+WHERE c.case_id = "00016c8f-a0be-4319-9c42-4f3bcd90ac92";

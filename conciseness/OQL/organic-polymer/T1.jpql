@@ -1,0 +1,10 @@
+// OQL/JPQL cannot query the schema; inspect the JPA metamodel via reflection to find
+// classes declaring both a SMILES and a thermal-decomposition attribute.
+List<String> matches = new ArrayList<>();
+for (EntityType<?> e : em.getMetamodel().getEntities()) {
+    Set<String> attrs = new HashSet<>();
+    for (Attribute<?, ?> a : e.getAttributes()) attrs.add(a.getName());
+    if (attrs.stream().anyMatch(n -> n.contains("smiles")) &&
+        attrs.stream().anyMatch(n -> n.contains("thermalDecomposition")))
+        matches.add(e.getName());
+}

@@ -1,0 +1,7 @@
+# ---- Python bytecode cache ----
+__pycache__/
+*.pyc
+
+# Note: the large converted datasets under conciseness/_*_conversion/ (~50 MB of
+# JSON/CSV) are already excluded by each folder's own .gitignore; only the small
+# conversion scripts, object/*.java, and per-domain READMEs are tracked there.

@@ -1,0 +1,2 @@
+select schema
+where exist protection_potential or exist repassivation_potential or exist hysteresis_loop

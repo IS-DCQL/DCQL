@@ -1,0 +1,5 @@
+UPDATE `dcql`._default.materials_library AS mat
+SET s.thermal.Tg_DSC_Onset = s.thermal.glass_temperature,
+    s.thermal.glass_temperature = MISSING
+    FOR s IN mat.samples END
+WHERE ANY s IN mat.samples SATISFIES s.thermal.glass_temperature IS NOT MISSING END;

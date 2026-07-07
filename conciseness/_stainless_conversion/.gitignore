@@ -1,0 +1,7 @@
+# Generated/derived data — regenerate with the scripts; keep scripts + object/*.java + docs
+stainless_mechanical_en.json
+stainless_pitting_en.json
+relational/
+document/
+object/object_instances.json
+schema/

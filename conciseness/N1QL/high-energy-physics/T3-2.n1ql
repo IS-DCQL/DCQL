@@ -1,0 +1,7 @@
+SELECT e.event_number,
+       SQRT(POWER(SUM(p.momentum.px), 2) + POWER(SUM(p.momentum.py), 2)) AS met
+FROM `dcql`._default.events e
+UNNEST e.particles p
+WHERE p.status = 1
+GROUP BY e.event_number
+HAVING SQRT(POWER(SUM(p.momentum.px), 2) + POWER(SUM(p.momentum.py), 2)) > 50000;

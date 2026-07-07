@@ -1,0 +1,3 @@
+-- Couchbase is schema-less: no schema definition is required.
+-- A 1:N gene-variant set may optionally be held in its own collection:
+CREATE COLLECTION `dcql`._default.gene_variant;

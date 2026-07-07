@@ -1,0 +1,5 @@
+select name
+from template Polymer dataset materials
+where category = "Semi-Aromatic"
+  and any (samples[].glass_temperature > 280 and samples[].tensile_strength > 150)
+  and any (processing[].injection_speed > 50)

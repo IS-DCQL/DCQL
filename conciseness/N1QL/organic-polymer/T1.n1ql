@@ -1,0 +1,7 @@
+-- Couchbase has no schema catalog; probe the collection for records that carry both
+-- attributes, returning the keyspace when the two co-occur.
+SELECT DISTINCT RAW "materials_library"
+FROM `dcql`._default.materials_library AS m
+WHERE m.basic_info.smiles IS NOT MISSING
+  AND ANY s IN m.samples SATISFIES s.thermal.thermal_decomposition IS NOT MISSING END
+LIMIT 1;

@@ -1,0 +1,6 @@
+UPDATE `dcql`._default.events AS e
+SET e.particles = ARRAY {"id": p.id, "pid": p.pid, "status": p.status, "mass": p.mass,
+      "momentum": p.momentum,
+      "parent_ids": ARRAY x FOR x IN p.parent_ids WHEN x IN (ARRAY q.id FOR q IN e.particles WHEN q.status = 1 END) END,
+      "child_ids":  ARRAY x FOR x IN p.child_ids  WHEN x IN (ARRAY q.id FOR q IN e.particles WHEN q.status = 1 END) END}
+    FOR p IN e.particles WHEN p.status = 1 END;

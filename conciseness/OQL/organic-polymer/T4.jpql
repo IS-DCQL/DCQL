@@ -1,0 +1,8 @@
+// Renaming an attribute means changing the persistent class plus a data migration.
+// 1) In Material: rename field glassTemperature -> tgDscOnset, @Column(name = "Tg_DSC_Onset").
+// 2) Migrate every stored object:
+for (Material m : em.createQuery("SELECT m FROM Material m", Material.class).getResultList()) {
+    m.setTgDscOnset(m.getGlassTemperature());
+    em.merge(m);
+}
+em.flush();

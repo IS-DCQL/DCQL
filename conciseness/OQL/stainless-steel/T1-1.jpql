@@ -1,0 +1,9 @@
+@Entity
+public class PesrHnsProtocol {
+    @Id private String protocolId;
+    private String grade;
+    @ElementCollection private List<Composition>        compositionSystem;
+    @ElementCollection private List<ProcessParameter>   processParameters;
+    @ElementCollection private List<Microstructure>     microstructure;
+    @ElementCollection private List<PerformanceIndicator> performanceIndicators;
+}

@@ -1,0 +1,22 @@
+language,question_type,score_mean,score_sd
+SQL,Query Writing,60.6,2.46
+SQL,Query Reading,13.7,1.89
+SQL,Result Prediction,13.5,2.76
+OQL,Query Writing,47.1,4.44
+OQL,Query Reading,12.7,1.2
+OQL,Result Prediction,9.8,1.19
+MQL,Query Writing,44,8.92
+MQL,Query Reading,8.1,3.45
+MQL,Result Prediction,9.5,3.76
+N1QL,Query Writing,59.1,3.39
+N1QL,Query Reading,12,1.51
+N1QL,Result Prediction,10.1,2.04
+XQuery,Query Writing,45.2,4.81
+XQuery,Query Reading,10,2.03
+XQuery,Result Prediction,12.4,1.08
+JSONiq,Query Writing,47.9,5.54
+JSONiq,Query Reading,10.5,2.82
+JSONiq,Result Prediction,12.3,1.56
+DCQL,Query Writing,60.7,1.8
+DCQL,Query Reading,13.9,0.7
+DCQL,Result Prediction,13.4,1.1

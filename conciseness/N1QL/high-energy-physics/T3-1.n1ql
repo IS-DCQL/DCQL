@@ -1,0 +1,4 @@
+SELECT e.event_number, p.id AS particle_id
+FROM `dcql`._default.events e
+UNNEST e.particles p
+WHERE p.pid IN [11, -11] AND p.status = 1;

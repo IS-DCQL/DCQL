@@ -1,0 +1,5 @@
+SELECT e.eventNumber, SQRT(POWER(SUM(p.momentum.px), 2) + POWER(SUM(p.momentum.py), 2))
+FROM Event e JOIN e.particles p
+WHERE p.status = 1
+GROUP BY e.eventNumber
+HAVING SQRT(POWER(SUM(p.momentum.px), 2) + POWER(SUM(p.momentum.py), 2)) > 50000

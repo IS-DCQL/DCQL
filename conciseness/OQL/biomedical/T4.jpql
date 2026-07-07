@@ -1,0 +1,3 @@
+// Remove the persistent class definition (delete LegacyRiskFactors.java)
+// and drop its extent:
+DROP TABLE legacy_risk_factors;

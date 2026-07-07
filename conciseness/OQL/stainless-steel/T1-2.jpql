@@ -1,0 +1,7 @@
+// OQL/JPQL cannot query the schema; inspect the JPA metamodel via reflection to find
+// attributes named like protectionPotential / repassivationPotential / hysteresisLoop.
+List<String> matches = new ArrayList<>();
+for (EntityType<?> e : em.getMetamodel().getEntities())
+    for (Attribute<?, ?> a : e.getAttributes())
+        if (a.getName().matches(".*(protectionPotential|repassivationPotential|hysteresisLoop).*"))
+            matches.add(e.getName() + "." + a.getName());

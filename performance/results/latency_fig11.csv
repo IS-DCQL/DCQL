@@ -1,0 +1,29 @@
+domain,task,language,cold_ms,hot_mean_ms,hot_sd_ms
+Biomedical,T2,SQL,0.246,0.056,0.003
+Biomedical,T2,OQL,22,0.327,0.169
+Biomedical,T2,MQL,2,0,0
+Biomedical,T2,N1QL,86.68,5.10,0.97
+Biomedical,T2,XQuery,471,4.79,1.15
+Biomedical,T2,JSONiq,16179,11350,766
+Biomedical,T2,DCQL,10,2.11,0.53
+Biomedical,T3,SQL,21.38,9.93,0.246
+Biomedical,T3,OQL,37,7.877,1.723
+Biomedical,T3,MQL,104,7.14,0.35
+Biomedical,T3,N1QL,854.90,80.98,5.25
+Biomedical,T3,XQuery,518,29.86,1.88
+Biomedical,T3,JSONiq,16875,11866,643
+Biomedical,T3,DCQL,116,5.89,0.744
+Organic Polymer,T2,SQL,1.12,0.271,0.0066
+Organic Polymer,T2,OQL,45.477,2.411,0.269
+Organic Polymer,T2,MQL,13,1.625,0.518
+Organic Polymer,T2,N1QL,64.25,7.67,0.6
+Organic Polymer,T2,XQuery,346,3.45,0.58
+Organic Polymer,T2,JSONiq,6522,2953,57
+Organic Polymer,T2,DCQL,3,0.125,0.35
+Organic Polymer,T3,SQL,2.924,0.685,0.016
+Organic Polymer,T3,OQL,66.185,2.981,0.301
+Organic Polymer,T3,MQL,21,9.5,0.535
+Organic Polymer,T3,N1QL,86.27,12.39,1.20
+Organic Polymer,T3,XQuery,466,9.12,1.51
+Organic Polymer,T3,JSONiq,6432,2859,82
+Organic Polymer,T3,DCQL,21,0.875,0.35

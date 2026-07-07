@@ -1,0 +1,3 @@
+select meta.data_id, WAXD_result.alpha_crystallinity
+from template Polymer dataset processing
+where meta.data_id = 195540 and WAXD_result.alpha_crystallinity > 100

@@ -1,0 +1,6 @@
+select material_info.grade
+from template StainlessExperiment dataset pitting
+where solution_environment.NaCl = 3.5
+  and experimental_conditions.temperature = 20
+  and result_characterization.pitting_potential_eb > 1.0
+  and material_performance.yield_strength > 550

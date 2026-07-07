@@ -1,0 +1,5 @@
+SELECT p.meta.data_id,
+       p.WAXD_result.alpha_crystallinity AS alpha_crystallinity
+FROM `dcql`._default.processing_logs p
+WHERE p.meta.data_id = 195540
+AND p.WAXD_result.alpha_crystallinity > 100;
