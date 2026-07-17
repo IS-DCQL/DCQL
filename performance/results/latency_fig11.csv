@@ -19,11 +19,11 @@ Organic Polymer,T2,MQL,13,1.625,0.518
 Organic Polymer,T2,N1QL,64.25,7.67,0.6
 Organic Polymer,T2,XQuery,346,3.45,0.58
 Organic Polymer,T2,JSONiq,6522,2953,57
-Organic Polymer,T2,DCQL,3,0.125,0.35
+Organic Polymer,T2,DCQL,3,0.125,0.035
 Organic Polymer,T3,SQL,2.924,0.685,0.016
 Organic Polymer,T3,OQL,66.185,2.981,0.301
 Organic Polymer,T3,MQL,21,9.5,0.535
 Organic Polymer,T3,N1QL,86.27,12.39,1.20
 Organic Polymer,T3,XQuery,466,9.12,1.51
 Organic Polymer,T3,JSONiq,6432,2859,82
-Organic Polymer,T3,DCQL,21,0.875,0.35
+Organic Polymer,T3,DCQL,21,0.875,0.035
