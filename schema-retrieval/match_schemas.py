@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""§6.6 (RQ4) schema-reuse case study — offline path/type matching with graded coverage.
+"""§6.6 (RQ4) schema-reuse case study — offline reproduction of the schema-level query.
 
-Equivalent offline pipeline for the schema-level query in `query.dcql` (Scheme C). It exports
-each candidate schema to a path/type representation, evaluates the three query conditions to
-decide whether the schema is *returned*, and then grades every one of the six required fields
-along the three dimensions a DCQL schema condition constrains — attribute name, nesting path,
-and DCM type — instead of a binary hit/miss:
+The case study itself is run on the platform: the query in `query.dcql` is parsed, validated,
+translated into a schema-metadata index request and evaluated by the NMDMS read side, exactly
+as Section 5 describes, and the seven schemas under `schemas/` are what it returns. This script
+is NOT that pipeline. It re-implements the query's path/type semantics in plain Python so that
+a reader without access to the platform can reproduce the returned set and the per-field
+grading of Table rq4 from the shipped schemas alone.
+
+It exports each candidate schema to a path/type representation, evaluates the three query
+conditions to decide whether the schema is *returned*, and then grades every one of the six
+required fields along the three dimensions a DCQL schema condition constrains — attribute
+name, nesting path, and DCM type — instead of a binary hit/miss:
 
     exact    (score 1.0)  name, path, and type all match
     var_path (score 0.5)  a same-named field of the required type sits at a different path
@@ -20,8 +26,8 @@ R reusable, top-k precision) is printed. The full schema-library size N is a pro
 real NMDMS library (> 2000 schemas) and is documented in `README.md`, not derived here.
 
 INPUT: `SCHEMA_LIB` (env var or the constant below) points at a folder of DCM schema
-templates. The bundled `schemas/` folder holds the K = 7 candidates the query returned from
-the real library, so running this script reproduces `candidates.csv` and Table rq4 verbatim.
+templates. The bundled `schemas/` folder holds the K = 7 candidates the query returned, so
+running this script reproduces `candidates.csv` and Table rq4 verbatim.
 Each file is a DCM template `{ "_id": …, "<attr>": {"_type": …, "r": …, <nested>}, … }`,
 optionally wrapped as `{"dataset": …, "template": {…}}` — the format emitted by
 `../conciseness/_<domain>_conversion/to_schema.py`.
@@ -38,15 +44,16 @@ SCHEMA_LIB = os.environ.get("SCHEMA_LIB", os.path.join(HERE, "schemas"))
 LIBRARY_SIZE_N = "> 2000"
 
 # The 6 required fields of the new stainless-steel corrosion+mechanical model (name, path,
-# DCM type). Paths follow the paper convention: the `perform` generator is transparent, so its
-# branches are addressed directly as corr.* / mech.* (see flatten()).
+# DCM type). Paths follow the paper: an attribute key addresses a child of a container OR of a
+# generator (Definition 3), so the generator contributes its own segment -- perform.corr.* /
+# perform.mech.*, exactly as the paper writes the running query.
 REQUIRED = [
     ("info.batch", "string"),
     ("info.comp", "string"),                 # Array{String} -> element type string
-    ("corr.corrInfo.elecPot", "number"),
-    ("corr.corrInfo.density", "number"),
-    ("mech.mechInfo.yield", "number"),
-    ("mech.mechInfo.hard", "number"),
+    ("perform.corr.corrInfo.elec", "number"),
+    ("perform.corr.corrInfo.density", "number"),
+    ("perform.mech.mechInfo.yield", "number"),
+    ("perform.mech.mechInfo.hard", "number"),
 ]
 
 SCORE = {"exact": 1.0, "var_path": 0.5, "var_type": 0.5, "missing": 0.0}
@@ -57,10 +64,10 @@ def flatten(node, prefix=""):
 
     - container: recurse by attribute name.
     - array / table: descend into the element (stored under the repeated key), keeping the
-      collection's path (so a table column corr.corrInfo.elecPot flattens to that path).
-    - generator: TRANSPARENT — it contributes no path segment of its own; its mutually
-      exclusive branches attach at its own level (corr.* / mech.*, not perform.*), matching
-      how the paper addresses generator branches by branch name.
+      collection's path (so a table column perform.corr.corrInfo.elec flattens to that path).
+    - generator: contributes its own segment, like a container. Definition 3 makes an
+      attribute key address a child of a container-type OR generator-type node, so the
+      branches of `perform` are reached as perform.corr.* / perform.mech.*.
     """
     out = {}
     if not isinstance(node, dict):
@@ -70,19 +77,13 @@ def flatten(node, prefix=""):
         for k, sub in node.items():
             if k.startswith("_") or k == "r":
                 continue
-            if isinstance(sub, dict) and sub.get("_type") == "generator":
-                for bk, bsub in sub.items():
-                    if bk.startswith("_") or bk == "r":
-                        continue
-                    out.update(flatten(bsub, f"{prefix}.{bk}" if prefix else bk))
-            else:
-                out.update(flatten(sub, f"{prefix}.{k}" if prefix else k))
+            out.update(flatten(sub, f"{prefix}.{k}" if prefix else k))
     elif t in ("array", "table"):
         for k, sub in node.items():
             if k.startswith("_") or k == "r":
                 continue
             out.update(flatten(sub, prefix))
-    elif t == "generator":                       # a generator reached at the root: transparent
+    elif t == "generator":                       # like a container: each branch is a keyed child
         for k, sub in node.items():
             if k.startswith("_") or k == "r":
                 continue
@@ -114,11 +115,14 @@ def grade(req_path, req_type, paths):
 
 
 def satisfies_query(paths):
-    """Scheme C: corr.corrInfo.elecPot = Number  AND  ANY yield = Number  AND  EXIST
-    corr.corrInfo.density. A schema is *returned* iff it satisfies all three."""
-    c1 = paths.get("corr.corrInfo.elecPot") == "number"                         # exact path + type
+    """Scheme C: perform.corr.corrInfo.elec = Number  AND  ANY yield = Number  AND  EXIST
+    perform.corr.corrInfo.density. A schema is *returned* iff it satisfies all three.
+
+    This mirrors in Python what the platform's schema-metadata index evaluates; it is a
+    reproduction of that result, not the execution path used for the case study."""
+    c1 = paths.get("perform.corr.corrInfo.elec") == "number"                    # exact path + type
     c2 = any(leaf(p) == "yield" and ty == "number" for p, ty in paths.items())  # ANY yield = Number
-    c3 = "corr.corrInfo.density" in paths                                       # EXIST (any type)
+    c3 = "perform.corr.corrInfo.density" in paths                               # EXIST (any type)
     return c1 and c2 and c3
 
 

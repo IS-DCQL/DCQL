@@ -14,7 +14,7 @@
     "_type": "container", "r": true,
     "corrInfo": {"_type": "table", "r": true, "corrInfo": {
      "_type": "container", "r": true,
-     "elecPot": {"_type": "number", "r": true},
+     "elec": {"_type": "number", "r": true},
      "density": {"_type": "range", "r": true}
     }}
    },

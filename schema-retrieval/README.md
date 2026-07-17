@@ -13,17 +13,18 @@ A researcher needs a schema for a new round of stainless-steel corrosion + mecha
 The **6 required fields** are given not just as names but as `(name . path . type)` triples:
 
 `info.batch` (String), `info.comp` (Array{String}),
-`corr.corrInfo.elecPot` (Number), `corr.corrInfo.density` (Number),
-`mech.mechInfo.yield` (Number), `mech.mechInfo.hard` (Number).
+`perform.corr.corrInfo.elec` (Number), `perform.corr.corrInfo.density` (Number),
+`perform.mech.mechInfo.yield` (Number), `perform.mech.mechInfo.hard` (Number).
 
 Before defining a new schema, the researcher issues the schema-level query in `query.dcql`
-(**Scheme C** — one precise condition + two deliberately relaxed ones):
+(**Scheme C** — one precise condition + two deliberately relaxed ones), executed on the
+platform through the DCQL execution layer:
 
 ```sql
 SELECT SCHEMA
-WHERE corr.corrInfo.elecPot = Number   -- exact: pin the pitting-potential column (path + type)
+WHERE perform.corr.corrInfo.elec = Number   -- exact: pin the pitting-potential column (path + type)
   AND ANY yield = Number               -- relaxed (position): some numeric yield, any nesting
-  AND EXIST corr.corrInfo.density      -- relaxed (type): density column present, type-free
+  AND EXIST perform.corr.corrInfo.density      -- relaxed (type): density column present, type-free
 ```
 
 The `AND` joins a corrosion and a mechanical condition in one query because a schema tree
@@ -53,12 +54,18 @@ of a different type → `var_type`); a strict conjunctive query would have disca
 
 ## Files
 - `query.dcql` — the DCQL schema-level retrieval statement (Scheme C, as in the paper).
-- `schemas/` — the **K = 7 returned candidates** as DCM schema templates (path/type format,
-  the same format emitted by `../conciseness/_<domain>_conversion/to_schema.py`). Shipping the
-  returned candidates makes the study self-contained and reproducible.
-- `match_schemas.py` — the equivalent **offline** pipeline: it flattens each schema to a
-  path/type map (the `perform` generator is transparent, so its branches are addressed as
-  `corr.*` / `mech.*`), keeps the schemas that satisfy the three query conditions, grades the
+- `schemas/` — the **seven candidates of this illustration** as DCM schema templates
+  (path/type format, the same format emitted by
+  `../conciseness/_<domain>_conversion/to_schema.py`). They were constructed for this example
+  to span a range of match qualities, S1 being the running StainlessSteel schema of the paper;
+  shipping them makes the study self-contained and reproducible.
+- `match_schemas.py` — an **offline reproduction** of the query, for readers without access to
+  the platform. The case study itself runs on NMDMS: the query is parsed, validated, translated
+  into a schema-metadata index request and evaluated by the read side (Section 5 of the paper),
+  and `schemas/` holds what it returned. This script re-implements the same path/type semantics
+  in plain Python: it flattens each schema to a
+  path/type map (the `perform` generator contributes its own path segment (Definition 3), so its
+  branches are addressed as `perform.corr.*` / `perform.mech.*`), keeps the schemas that satisfy the three query conditions, grades the
   six required fields, and writes `candidates.csv`. To run over the real library instead, set
   `SCHEMA_LIB` (env var) to your exported NMDMS schema library.
 - `candidates.csv` — the per-field match matrix of Table rq4, produced by `match_schemas.py`:
@@ -73,23 +80,23 @@ python3 match_schemas.py      # -> candidates.csv + the K / R / precision summar
 
 ## Candidate schemas (`schemas/`)
 
-The seven returned candidates span a smooth coverage gradient from a full duplicate down to a
-schema that clears the filter but is not reusable:
+The seven candidates span a coverage gradient from a full duplicate down to a schema that
+clears the filter but is not reusable:
 
 | # | schema | coverage | decision | distinguishing structure |
 |---|---|---|---|---|
 | S1 | `StainlessSteel`              | 1.00 | reuse directly            | the running example; all six fields exact |
-| S2 | `StainlessSteelPerfProfile`  | 0.92 | reuse with minor extension | hardness at `mech.summary.hard` (var_path) |
+| S2 | `StainlessSteelPerfProfile`  | 0.92 | reuse with minor extension | hardness at `perform.mech.summary.hard` (var_path) |
 | S3 | `StainlessSteelCorrMech`     | 0.83 | reuse with minor extension | no hardness column (missing) |
-| S4 | `StainlessSteelCorrTensile`  | 0.75 | reuse with minor extension | yield under `mech.tensile` (var_path); no hardness |
+| S4 | `StainlessSteelCorrTensile`  | 0.75 | reuse with minor extension | yield under `perform.mech.tensile` (var_path); no hardness |
 | S5 | `StainlessSteelProcCorr`     | 0.67 | partial reference         | density as `Range` (var_type); yield var_path; no hardness |
 | S6 | `StainlessSteelPittingScreen`| 0.58 | partial reference         | no composition (missing); density `Range` (var_type); no hardness |
 | S7 | `StainlessSteelLegacyLog`    | 0.33 | not reusable              | only pitting potential; density `Range`; yield var_path; no batch/composition/hardness |
 
 ## Summary
-- Schema-library size: **N > 2000** (a property of the real NMDMS library; not derived from
-  the seven returned candidates shipped here).
-- Candidates returned by the query: **K = 7**.
+- Schema-library size of the deployed platform: **N > 2000** (a property of the real NMDMS
+  library; the illustration below does not query it).
+- Candidates returned by the query over the seven shipped schemas: **K = 7**.
 - Reusable candidates (coverage ≥ 0.4): **R = 6**.
 - Top-k precision: **R/K = 86%**.
 

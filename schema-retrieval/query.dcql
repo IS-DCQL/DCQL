@@ -4,19 +4,19 @@
 -- Built on the running StainlessSteel example (Sections 3-5, Figure 2).
 --
 -- The 6 required fields of the new model (name . path . type):
---   info.batch (String), info.comp (Array{Number}),
---   corr.corrInfo.elecPot (Number), corr.corrInfo.density (Number),
---   mech.mechInfo.yield (Number), mech.mechInfo.hard (Number).
+--   info.batch (String), info.comp (Array{String}),
+--   perform.corr.corrInfo.elec (Number), perform.corr.corrInfo.density (Number),
+--   perform.mech.mechInfo.yield (Number), perform.mech.mechInfo.hard (Number).
 --
 -- The published query (Scheme C, Table rq4) mixes one PRECISE condition with two RELAXED ones,
 -- mirroring a user who has a few firm requirements and stays flexible on the rest:
---   * exact  : corr.corrInfo.elecPot = Number   -- pin the pitting-potential column (path + type)
+--   * exact  : perform.corr.corrInfo.elec = Number   -- pin the pitting-potential column (path + type)
 --   * fuzzy-position : ANY yield = Number        -- some numeric yield anywhere (level-insensitive key)
---   * fuzzy-type     : EXIST corr.corrInfo.density -- a density column is present, type unconstrained
+--   * fuzzy-type     : EXIST perform.corr.corrInfo.density -- a density column is present, type unconstrained
 -- The corrosion and mechanical conditions join with AND in one query because a schema tree
 -- keeps both branches of the `perform` generator, even though any record instantiates one.
 
 SELECT SCHEMA
-WHERE corr.corrInfo.elecPot = Number
+WHERE perform.corr.corrInfo.elec = Number
   AND ANY yield = Number
-  AND EXIST corr.corrInfo.density
+  AND EXIST perform.corr.corrInfo.density
